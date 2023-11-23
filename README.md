@@ -13,7 +13,7 @@ Updated the MongoDB to remove the cloud access key
 ```
 # sudo mongo —-port 27117
 use ace
-db.setting.find().forEach(printjson)
+db.setting.find({"key" : "super_cloudaccess"}).forEach(printjson)
 db.setting.remove({"key" : "super_cloudaccess"})
 exit
 ```
