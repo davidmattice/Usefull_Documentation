@@ -5,13 +5,13 @@ This was my experiance when migrating my controller from a Raspberry Pi (7.3.83)
 ## Migrating Self Hosted Controller to a new Device
 
 1. If using remote access, verify it is working first (see connection issue below)
-2. Download a backup file front the active conroller
+2. Download a backup file from the active conroller
 3. Install and start the new controller (see optional docker instructions below)
-4. Restore the backup file
-5. Verify device show, but are offline
-6. Verify controller shows on remote access site - unifi.ui.com
-7. On the OLD controller go to "Setting -> System -> General" and click **Export Site** (foller the steps presented)
-8. Download the export file, but there is no need to import it, the backup that was restored had everything needed
+4. Restore the backup file (from the login screen)
+5. Verify devices show up in the UI on the new controller, but are offline
+6. Verify the new controller shows on remote access site (if remote access is enabled) - unifi.ui.com
+7. On the OLD controller go to "Setting -> System -> General" and click **Export Site**
+8. Download the export file (for reference), but there is no need to import it, the backup that was restored had everything needed
 9. Enter the IP (or DNS name) of the new controller and select the the devices to migrate (all of them) - **Clicking continue will cause a brief outage**
 10. Verify all of the devices are visible in the new controller and are online
 11. Shutdown the old controller
