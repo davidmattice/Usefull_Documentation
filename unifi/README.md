@@ -17,8 +17,9 @@ This was my experiance when migrating my controller from a Raspberry Pi (7.3.83)
 11. Shutdown the old controller
 
 References
+- [How-to Migrate Unifi Controller](https://lazyadmin.nl/home-network/migrate-unifi-controller/)
 - [Similar process, but keeping the old IP on the new controller](https://community.ui.com/questions/How-to-migrate-UniFi-Controller-from-one-host-to-another/1c4bb6b7-f9b2-4628-8903-5b9a09cc5294#answer/ef467264-86c3-4f49-99f7-9b9af95182dc)
-- [Setting up on a Google Compute VM](https://metis.fi/en/2018/02/unifi-on-gcp)
+- [Setting up on a Google Compute VM](https://metis.fi/en/2018/02/unifi-on-gcp/)
 
 ## Migrating to a Docker Container (on a firewalla)
 
