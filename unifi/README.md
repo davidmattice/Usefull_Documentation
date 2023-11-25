@@ -24,7 +24,7 @@ References
 
 The steps are the same as above, but there are somee [specific instructions for step 3](https://help.firewalla.com/hc/en-us/articles/360053441074-Guide-How-to-run-UniFi-Controller-on-the-Firewalla-Gold-Series-Boxes)
 
-## Unifi Controller - Does not show up on the unifi.ui.com site with reemote access enabled
+## Unifi Controller - Does not show up on the unifi.ui.com site with remote access enabled
 
 Look at the server logs for issues with the connection to the Unifi site
 ```
