@@ -23,7 +23,7 @@ References
 
 ## Migrating to a Docker Container (on a firewalla)
 
-The steps are the same as above, but there are somee [specific instructions for step 3](https://help.firewalla.com/hc/en-us/articles/360053441074-Guide-How-to-run-UniFi-Controller-on-the-Firewalla-Gold-Series-Boxes)
+The steps are the same as above, but there are some [specific instructions for step 3](https://help.firewalla.com/hc/en-us/articles/360053441074-Guide-How-to-run-UniFi-Controller-on-the-Firewalla-Gold-Series-Boxes)
 
 References
 - [Scripts for firewalla](https://github.com/mbierman/unifi-installer-for-Firewalla/tree/main)
