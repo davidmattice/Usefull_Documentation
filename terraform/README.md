@@ -43,35 +43,43 @@ function tf {
     local tf_state_dir="/mnt/terraform/state"
 
     #echo "${2}, ${tfvars_file}, ${wksp}"
+    if [ -n "${TF_CMD}" ]; then
+        echo "Set TF_CMD environment variable before using!"
+        exit 1
+    fi
+    if [ -n "${TF_STATE_DIR}" ]; then
+        echo "Set TF_STATE_DIR environment variable before using!"
+        exit 1
+    fi
     if [ -d ${tf_state_dir} ]; then
         case "$1" in
             plan)
                 rm -rf .terraform 2>/dev/null
-                ${tf_cmd} init -input=false
+                ${TF_CMD} init -input=false
 	            if [ $? -eq 0 ]; then
-	                ${tf_cmd} workspace select ${wksp}
+	                ${TF_CMD} workspace select ${wksp}
     	            if [ $? -ne 0 ]; then
-	                    ${tf_cmd} workspace new ${wksp}
+	                    ${TF_CMD} workspace new ${wksp}
         	        fi
             	    if [ $? -eq 0 ]; then
-	                    ${tf_cmd} plan -input=false -out=${wksp}.plan -var-file=${2} ${*:3}
+	                    ${TF_CMD} plan -input=false -out=${wksp}.plan -var-file=${2} ${*:3}
                     fi
                 fi
 	            ;;
             apply)
-                ${tf_cmd} apply -input=false ${wksp}.plan ${*:3}
+                ${TF_CMD} apply -input=false ${wksp}.plan ${*:3}
 	            ;;
             *)
-                ${tf_cmd} $*
+                ${TF_CMD} $*
 	            ;;
         esac
     else
-        echo "Terraform state directory is not available [${tf_state_dir}]"
+        echo "Terraform state directory is not available [${TF_STATE_DIR}]"
     fi
 }
 ```
 You can now run ...
 ```
-tf plan <tfvars-file-name>
-tf apply <tfvars-file-name>
+tf plan <tfvars-file-name> [terraform options]
+tf apply <tfvars-file-name> [terraform options]
 ```
