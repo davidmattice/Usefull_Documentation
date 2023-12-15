@@ -13,29 +13,30 @@ sed -Ezi.bak "s/(Ext.Msg.show\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/
 ```
 ## Setup
 
-Add a role for Terraform to use
-```
-pveum role add terraform-role -privs "VM.Allocate VM.Clone VM.Config.CDROM VM.Config.CPU VM.Config.Cloudinit VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Monitor VM.Audit VM.PowerMgmt Datastore.AllocateSpace Datastore.Audit Sys.Audit Datastore.Allocate SDN.Use Sys.Modify"
-```
-Add a local PVE user
-```
-pveum user add f-terraform@pve -password <password-here> -comment "Terraform Functional User"
-```
-Add the role we create to the new user
-```
-pveum aclmod / -user f-terraform@pve -role terraform-role
-```
+
 Update `.bashrc` with the three environment variables
 ```
-export PROXMOX_VE_USERNAME="f-terraform@pve"
-export PROXMOX_VE_PASSWORD="<the-password-above>"
+export PROXMOX_VE_USERNAME="<terraform user>@pve"
+export PROXMOX_VE_PASSWORD="<terraform password>"
 export PROXMOX_VE_ENDPOINT="https://<hostname-or-ip>:8006/"
+```
+
+Add a user and role for Terraform to use
+```
+pveum role add terraform-role -privs "VM.Allocate VM.Clone VM.Config.CDROM VM.Config.CPU VM.Config.Cloudinit VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Monitor VM.Audit VM.PowerMgmt Datastore.AllocateSpace Datastore.Audit Sys.Audit Datastore.Allocate SDN.Use Sys.Modify"
+pveum user add f-terraform@pve -password <password-here> -comment "Terraform Functional User"
+pveum aclmod / -user f-terraform@pve -role terraform-role
 ```
 
 Add a user on the host server for SSH access
 ```
-useradd f-terraform
-passwd f-terraform
+useradd ${PROXMOX_VE_USERNAME}
+passwd ${PROXMOX_VE_USERNAME}
+```
+
+Add support for snippets
+```
+pvesm set local --content backup,iso,vztmpl,snippets
 chmod 777 /var/lib/vz/snippets
 ```
 There should be a better way!!!!!
