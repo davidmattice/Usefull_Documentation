@@ -30,7 +30,8 @@ pveum aclmod / -user f-terraform@pve -role terraform-role
 
 Add a user on the host server for SSH access
 ```
-useradd ${PROXMOX_VE_USERNAME}
+useradd -m -s /bin/bash ${PROXMOX_VE_USERNAME}
+echo "export PATH=$PATH:/usr/sbin" >>~f-terraform/.bashrc
 passwd ${PROXMOX_VE_USERNAME}
 ```
 
