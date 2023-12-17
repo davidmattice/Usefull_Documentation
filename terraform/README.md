@@ -21,6 +21,10 @@ ${SUDO} apt update && ${SUDO} apt install -y terraform
 ```
 function upd_tags {
     tag_full=$(cut -d= -f 2 version.txt)
+    echo "Updating tags to: ${tag_full}"
+    echo "Press Enter to continue ..."
+    read junk
+
     tag_min=${tag_full%.*}
     tag_maj=${tag_min%.*}.x
     tag_min=${tag_min}.x
@@ -39,7 +43,6 @@ Add simple alias to make using workspaces in terraform easier
 function tf {
     local tfvars_file=${2##*/}
     local wksp=${tfvars_file%%.*}
-    local tf_cmd="/usr/bin/terraform"
     local tf_state_dir="/mnt/terraform/state"
 
     #echo "${2}, ${tfvars_file}, ${wksp}"
