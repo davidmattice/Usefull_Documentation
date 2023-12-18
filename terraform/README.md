@@ -58,6 +58,7 @@ function tf {
         case "$1" in
             plan)
                 rm -rf .terraform 2>/dev/null
+                rm -f .terraform.lock.hcl 2>/dev/null
                 ${TF_CMD} init -input=false
 	            if [ $? -eq 0 ]; then
 	                ${TF_CMD} workspace select ${wksp}
