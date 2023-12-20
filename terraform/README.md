@@ -14,10 +14,25 @@ fi
 wget -O - https://apt.releases.hashicorp.com/gpg | ${SUDO} gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep VERSION_CODENAME /etc/os-release | cut -f 2 -d =) main" | ${SUDO} tee /etc/apt/sources.list.d/hashicorp.list
 ${SUDO} apt update && ${SUDO} apt install -y terraform
+tf=$(whereis terraform | cut -d ' ' -f 2)
+echo "export TF_CMD=${tf}" >>~/.bashrc
 ```
 
+## Use a NFS share to store Terraform state on a NAS
+
+Add a mount to **/etc/fstab** so the path is automounted
+```
+if [ $UID -ne 0 ]; then
+    export SUDO="sudo"
+else
+    export SUDO=""
+fi
+${SUDO} echo "<IP>:<volume> /mnt/terraform nfs defaults 0 0" >>/etc/fstab
+echo "export TF_STATE_DIR=/mnt/terraform/state" >>~/.bashrc
+```
 ## Git Tagging Helper
 
+Add this function to **~/.bashrc** to make it easy to add tags to terraform repos as they are committed.
 ```
 function upd_tags {
     tag_full=$(cut -d= -f 2 version.txt)
@@ -38,12 +53,11 @@ function upd_tags {
 
 ## Terraform Planning Helper
 
-Add simple alias to make using workspaces in terraform easier
+Add this simple function to **~/.bashrc** to make using workspaces in terraform easier
 ```
 function tf {
     local tfvars_file=${2##*/}
     local wksp=${tfvars_file%%.*}
-    local tf_state_dir="/mnt/terraform/state"
 
     #echo "${2}, ${tfvars_file}, ${wksp}"
     if [ -n "${TF_CMD}" ]; then
