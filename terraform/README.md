@@ -28,6 +28,7 @@ else
     export SUDO=""
 fi
 ${SUDO} echo "<IP>:<volume> /mnt/terraform nfs defaults 0 0" >>/etc/fstab
+${SUDO} mount -a
 echo "export TF_STATE_DIR=/mnt/terraform/state" >>~/.bashrc
 ```
 ## Git Tagging Helper
