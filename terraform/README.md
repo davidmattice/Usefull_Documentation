@@ -13,7 +13,7 @@ else
 fi
 wget -O - https://apt.releases.hashicorp.com/gpg | ${SUDO} gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep VERSION_CODENAME /etc/os-release | cut -f 2 -d =) main" | ${SUDO} tee /etc/apt/sources.list.d/hashicorp.list
-${SUDO} apt update && ${SUDO} apt install -y terraform
+${SUDO} apt update && ${SUDO} apt install -y terraform jq
 tf=$(whereis terraform | cut -d ' ' -f 2)
 echo "export TF_CMD=${tf}" >>~/.bashrc
 ```
@@ -59,17 +59,32 @@ Add this simple function to **~/.bashrc** to make using workspaces in terraform 
 function tf {
     local tfvars_file=${2##*/}
     local wksp=${tfvars_file%%.*}
+    local tf_state_dir=$(grep workspace_dir *.tf | head -1 | cut -d = -f 2 | tr -d ' "')
 
-    #echo "${2}, ${tfvars_file}, ${wksp}"
-    if [ -n "${TF_CMD}" ]; then
-        echo "Set TF_CMD environment variable before using!"
+    # Check if tfvars file is accessable
+    if [ ! -r ${2} ]; then
+        echo "Could not read [${2}]!"
         exit 1
     fi
-    if [ -n "${TF_STATE_DIR}" ]; then
-        echo "Set TF_STATE_DIR environment variable before using!"
-        exit 1
+
+    # Ensure we have an executable for Terraform
+    if [ -z "${TF_CMD}" ]; then
+        # Environment variable is not set try to find a default
+        TF_CMD=$(whereis terraform | cut -d : -f 2 | tr -d " ")
+        if [ -z "${TF_CMD}" ]; then
+            echo "Could not find terraform command.  Set TF_CMD environment variable or ensure terraform is in the PATH before using!"
+            exit 1
+        fi
     fi
-    if [ -d ${tf_state_dir} ]; then
+
+    if [ -z "${tf_state_dir}" ]; then
+        echo "WARNING: No local backend configured, useing local state!"
+        sleep 5
+    fi
+
+    #echo "${TF_CMD}, ${tfvars_file}, ${wksp}, ${tf_state_dir}"
+
+    if [[ -z "${tf_state_dir}" ]] || ( [[ -n "${tf_state_dir}" ]] && [[ -d "${tf_state_dir}" ]] ); then
         case "$1" in
             plan)
                 rm -rf .terraform 2>/dev/null
@@ -93,7 +108,7 @@ function tf {
 	            ;;
         esac
     else
-        echo "Terraform state directory is not available [${TF_STATE_DIR}]"
+        echo "Local backend set to [${tf_state_dir}], but directory is not accessable"
     fi
 }
 ```
