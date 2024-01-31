@@ -42,6 +42,20 @@ chmod 777 /var/lib/vz/snippets
 ```
 There should be a better way!!!!!
 
+Add a 2nd bridge for private networking
+```
+cat >>/etc/networkinterfaces <<<EOF
+auto vmbr1
+iface vmbr1 inet manual
+        bridge-ports none
+        bridge-stp off
+        bridge-fd 0
+EOF
+ifreload -a
+```
+ug!!
+
+
 ## References
 
 ### The BPG Proxmox Terraform Provider
