@@ -55,6 +55,13 @@ ifreload -a
 ```
 ug!!
 
+Disable IPv6
+```
+cat >>/etc/sysctl.d/disable-ipv6.conf <<<EOF
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+EOF
+```
 
 ## References
 
