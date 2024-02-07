@@ -6,11 +6,21 @@ Proxmox Virtual Environment - Home Lab Setup
 
 Download Proxmox from [here](https://www.proxmox.com/en/proxmox-virtual-environment/get-started) and follow the instructions to write to an ISO or USB boot drive
 
-## Remove subscription message
+## Proxmox Virtual Environment Host Updates
+
+### Remove subscription message
 
 ```
 sed -Ezi.bak "s/(Ext.Msg.show\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/\1/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js && systemctl restart pveproxy.service
 ```
+
+### Package updates
+
+```
+sed -i "s/enterprise/no-subscription/g" /etc/apt/sources.list.d/ceph.list
+sed -i "s/enterprise/no-subscription/g" /etc/apt/sources.list.d/pve-enterprise.list
+```
+
 ## Setup
 
 
