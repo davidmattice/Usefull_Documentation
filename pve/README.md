@@ -12,7 +12,7 @@ This should all be in a script that can be run.
 
 ### Switch from static IP to DHCP with Reservation
 
-Update the NIC below (enp5s0) to be appropriate for you setup
+Update the NIC below (enp5s0) to be appropriate for you setup - /etc/network/interfaces
 ```
 #iface vmbr0 inet static
 #        address 192.168.1.157/24
