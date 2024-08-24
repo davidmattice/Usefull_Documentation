@@ -10,6 +10,33 @@ Download Proxmox from [here](https://www.proxmox.com/en/proxmox-virtual-environm
 
 This should all be in a script that can be run.
 
+### Switch from static IP to DHCP with Reservation
+
+Update the NIC below (enp5s0) to be appropriate for you setup
+```
+#iface vmbr0 inet static
+#        address 192.168.1.157/24
+#        gateway 192.168.1.1
+iface vmbr0 inet dhcp
+        bridge-ports enp5s0
+        bridge-stp off
+        bridge-fd 0
+```
+
+Optionally auto update /etc/hosts
+```
+# Set some useful variables
+hn=$(hostname)
+hnf=$(hostname -f)
+file="/etc/hosts"
+
+# If required update the file
+if ([ $reason = "BOUND" ] || [ $reason = "RENEW" ]); then
+  sed -i "s/^.*\s${hnf}\s.*$/${new_ip_address} ${hnf} ${hn}/" ${file}
+fi
+```
+Reference: [Proxmox forum article](https://forum.proxmox.com/threads/set-a-dynamic-address-to-pve.119847/) and [related link](https://weblog.lkiesow.de/20220223-proxmox-test-machine-self-servic/proxmox-server-dhcp.html)
+
 ### Remove subscription message
 ```
 sed -Ezi.bak "s/(Ext.Msg.show\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/\1/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js && systemctl restart pveproxy.service
@@ -29,7 +56,8 @@ pvesm set local --content backup,iso,vztmpl,snippets
 chmod 777 /var/lib/vz/snippets
 ```
 
-### More stuff to test
+
+## More stuff to test
 
 Add a 2nd bridge for private networking
 ```
