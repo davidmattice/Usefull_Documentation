@@ -25,17 +25,17 @@ iface vmbr0 inet dhcp
 
 Optionally auto update - create: /etc/dhcp/dhclient-exit-hooks.d/update-etc-hosts
 ```
-cat - >test2 <<<EOF
+cat << HERE_DOC >test2
 # Set some useful variables
-hn=$(hostname)
-hnf=$(hostname -f)
+hn=\$(hostname)
+hnf=\$(hostname -f)
 file="/etc/hosts"
 
 # If required update the file
-if ([ $reason = "BOUND" ] || [ $reason = "RENEW" ]); then
-  sed -i "s/^.*\s${hnf}\s.*$/${new_ip_address} ${hnf} ${hn}/" ${file}
+if ([ \$reason = "BOUND" ] || [ \$reason = "RENEW" ]); then
+  sed -i "s/^.*\s\${hnf}\s.*\$/\${new_ip_address} \${hnf} \${hn}/" \${file}
 fi
-EOF
+HERE_DOC
 ```
 Reference: [Proxmox forum article](https://forum.proxmox.com/threads/set-a-dynamic-address-to-pve.119847/) and [related link](https://weblog.lkiesow.de/20220223-proxmox-test-machine-self-servic/proxmox-server-dhcp.html)
 
