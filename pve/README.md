@@ -56,7 +56,7 @@ chmod 777 /var/lib/vz/snippets
 
 ## More stuff to test
 
-Add a 2nd bridge for private networking
+Add a 2nd bridge for private networking (Available if 2nd NIC is installed)
 ```
 cat >>/etc/networkinterfaces <<<EOF
 auto vmbr1
