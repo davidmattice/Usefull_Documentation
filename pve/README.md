@@ -42,6 +42,7 @@ sed -Ezi.bak "s/(Ext.Msg.show\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/
 ```
 mv /etc/apt/sources.list.d/ceph.list /etc/apt/sources.list.d/ceph.orig
 echo "deb http://download.proxmox.com/debian/ceph-quincy bookworm no-subscription" >/etc/apt/sources.list.d/ceph.list
+echo "deb http://download.proxmox.com/debian/ceph-reef bookworm no-subscription" >>/etc/apt/sources.list.d/ceph.list
 mv /etc/apt/sources.list.d/pve-enterprise.list /etc/apt/sources.list.d/pve-enterprise.orig
 echo "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription" >/etc/apt/sources.list.d/pve.list
 ```
