@@ -53,31 +53,22 @@ pvesm set local --content backup,iso,vztmpl,snippets
 chmod 777 /var/lib/vz/snippets
 ```
 
-
 ## Configure custom user for Terraform access (THIS IS NOT WORKING)
 
 ### Add a user and role for Terraform to use
 ```
+export TF_PASSWORD="PASSWORD_HERE"
+export TF_USERNAME="f-terraform"
 pveum role add terraform-role -privs "VM.Allocate VM.Clone VM.Config.CDROM VM.Config.CPU VM.Config.Cloudinit VM.Config.Disk VM.Config.HWType VM.Config.Memory VM.Config.Network VM.Config.Options VM.Monitor VM.Audit VM.PowerMgmt Datastore.AllocateSpace Datastore.Audit Sys.Audit Datastore.Allocate SDN.Use Sys.Modify"
-pveum user add f-terraform@pve -password <password-here> -comment "Terraform Functional User"
-pveum aclmod / -user f-terraform@pve -role terraform-role
+pveum user add ${TF_USERNAME}@pve -password ${TF_PASSWORD} -comment "Terraform Functional User"
+pveum aclmod / -user ${TF_USERNAME}@pve -role terraform-role
+useradd -m -s /bin/bash ${TF_USERNAME}
+echo "export PATH=$PATH:/usr/sbin" >>~${TF_USERNAME}/.bashrc
+passwd ${TF_USERNAME}
 ```
+Information on using Terraform is [here](https://github.com/davidmattice/Usefull_Documentation/blob/main/terraform/README.md)
 
-### Update `.bashrc` with the three environment variables
-```
-export PROXMOX_VE_USERNAME="<terraform user>@pve"
-export PROXMOX_VE_PASSWORD="<terraform password>"
-export PROXMOX_VE_ENDPOINT="https://<hostname-or-ip>:8006/"
-```
-
-### Add a user on the host server for SSH access
-```
-useradd -m -s /bin/bash ${PROXMOX_VE_USERNAME}
-echo "export PATH=$PATH:/usr/sbin" >>~f-terraform/.bashrc
-passwd ${PROXMOX_VE_USERNAME}
-```
-
-## More Optional items
+## Some Optional items
 
 ### Add 2nd NIC as a bridge to another network (not tested)
 
