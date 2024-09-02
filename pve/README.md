@@ -54,29 +54,6 @@ chmod 777 /var/lib/vz/snippets
 ```
 
 
-## More stuff to test
-
-Add a 2nd bridge for private networking (Available if 2nd NIC is installed)
-```
-cat >>/etc/networkinterfaces <<<EOF
-auto vmbr1
-iface vmbr1 inet manual
-        bridge-ports none
-        bridge-stp off
-        bridge-fd 0
-EOF
-ifreload -a
-```
-ug!!
-
-Disable IPv6
-```
-cat >>/etc/sysctl.d/disable-ipv6.conf <<<EOF
-net.ipv6.conf.all.disable_ipv6 = 1
-net.ipv6.conf.default.disable_ipv6 = 1
-EOF
-```
-
 ## Configure custom user for Terraform access (THIS IS NOT WORKING)
 
 ### Add a user and role for Terraform to use
@@ -99,6 +76,32 @@ useradd -m -s /bin/bash ${PROXMOX_VE_USERNAME}
 echo "export PATH=$PATH:/usr/sbin" >>~f-terraform/.bashrc
 passwd ${PROXMOX_VE_USERNAME}
 ```
+
+## More Optional items
+
+### Add 2nd NIC as a bridge to another network (not tested)
+
+Add a 2nd bridge for private networking (Available if 2nd NIC is installed)
+```
+cat >>/etc/networkinterfaces <<<EOF
+auto vmbr1
+iface vmbr1 inet manual
+        bridge-ports none
+        bridge-stp off
+        bridge-fd 0
+EOF
+ifreload -a
+```
+
+### Disable IPv6
+```
+cat >>/etc/sysctl.d/disable-ipv6.conf <<<EOF
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+EOF
+```
+
+
 
 ## References
 
