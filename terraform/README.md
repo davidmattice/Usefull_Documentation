@@ -1,6 +1,6 @@
 # Terraform setup
 
-Setting up terraform and using it in a home lab
+Setting up terraform on a Management device and using it in a home lab
 
 ## Terraform Installation
 
