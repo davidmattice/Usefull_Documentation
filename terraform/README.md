@@ -2,7 +2,9 @@
 
 Setting up terraform on a Management device and using it in a home lab
 
-## Terraform Installation
+## Configure Terraform
+
+### Terraform Installation
 
 Install Terraform ...
 ```
@@ -18,7 +20,7 @@ tf=$(whereis terraform | cut -d ' ' -f 2)
 echo "export TF_CMD=${tf}" >>~/.bashrc
 ```
 
-## Use a NFS share to store Terraform state on a NAS
+### Use a NFS share to store Terraform state on a NAS
 
 Ensure the NAS volume has permissions for the Management node that will be running Terraform.
 
@@ -33,7 +35,7 @@ echo "<IP>:<volume> /mnt/terraform nfs defaults 0 0" | ${SUDO} tee -a /etc/fstab
 ${SUDO} mount -a
 echo "export TF_STATE_DIR=/mnt/terraform/state" >>~/.bashrc
 ```
-## Git Tagging Helper
+### Git Tagging Helper
 
 Add this function to **~/.bashrc** to make it easy to add tags to terraform repos as they are committed.
 ```
@@ -54,7 +56,7 @@ function upd_tags {
 }
 ```
 
-## Terraform Planning Helper
+### Terraform Planning Helper
 
 Add this simple function to **~/.bashrc** to make using workspaces in terraform easier
 ```
@@ -118,4 +120,14 @@ You can now run ...
 ```
 tf plan <tfvars-file-name> [terraform options]
 tf apply <tfvars-file-name> [terraform options]
+```
+
+## Terraform credentials for PVE Provider
+
+### Update `.bashrc` with these three environment variables
+
+```
+export PROXMOX_VE_USERNAME="<terraform user>@pve"
+export PROXMOX_VE_PASSWORD="<terraform password>"
+export PROXMOX_VE_ENDPOINT="https://<hostname-or-ip>:8006/"
 ```
