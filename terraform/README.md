@@ -20,6 +20,8 @@ echo "export TF_CMD=${tf}" >>~/.bashrc
 
 ## Use a NFS share to store Terraform state on a NAS
 
+Ensure the NAS volume has permissions for the Management node that will be running Terraform.
+
 Add a mount to **/etc/fstab** so the path is automounted
 ```
 if [ $UID -ne 0 ]; then
@@ -27,7 +29,7 @@ if [ $UID -ne 0 ]; then
 else
     export SUDO=""
 fi
-${SUDO} echo "<IP>:<volume> /mnt/terraform nfs defaults 0 0" >>/etc/fstab
+echo "<IP>:<volume> /mnt/terraform nfs defaults 0 0" | ${SUDO} tee -a /etc/fstab
 ${SUDO} mount -a
 echo "export TF_STATE_DIR=/mnt/terraform/state" >>~/.bashrc
 ```
