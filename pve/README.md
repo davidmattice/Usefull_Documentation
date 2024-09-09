@@ -8,13 +8,38 @@ Download Proxmox from [here](https://www.proxmox.com/en/proxmox-virtual-environm
 
 ## Proxmox Virtual Environment Host Updates
 
-This should all be in a script that can be run.
+Log into the PVE host and run each of the applicible commands.
+
+FUTURE: This should all be in a script that can be run.
+
+### Remove subscription message
+
+This will remove th constant notification from the UI about not having a subscription.
+
+```
+sed -Ezi.bak "s/(Ext.Msg.show\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/\1/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js && systemctl restart pveproxy.service
+```
+
+### Configure package updates for use with no subscription
+
+By default PVE uses the subscription packages.  This will switch to the non subscription packages.
+
+```
+mv /etc/apt/sources.list.d/ceph.list /etc/apt/sources.list.d/ceph.orig
+echo "deb http://download.proxmox.com/debian/ceph-quincy bookworm no-subscription" >/etc/apt/sources.list.d/ceph.list
+echo "deb http://download.proxmox.com/debian/ceph-reef bookworm no-subscription" >>/etc/apt/sources.list.d/ceph.list
+mv /etc/apt/sources.list.d/pve-enterprise.list /etc/apt/sources.list.d/pve-enterprise.orig
+echo "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription" >/etc/apt/sources.list.d/pve.list
+```
 
 ### Switch from static IP to DHCP with Reservation
 
-Update the *vmbr0* interface to be dhcp - update: /etc/network/interfaces
+If you wish to use a DHCP Reservation instead of a Static IP these steps will update the default **vmbr0** interface.
+
+Update the **vmbr0** interface to be dhcp - update: /etc/network/interfaces
 ```
 sed -i '/^iface vmbr0 inet static/{s/static/dhcp/;n;s/^/#/;n;s/^/#/}' ifs
+ifreload -a
 ```
 
 Setup the auto update of the hosts file - create: /etc/dhcp/dhclient-exit-hooks.d/update-etc-hosts
@@ -32,20 +57,6 @@ fi
 HERE_DOC
 ```
 Reference: [Proxmox forum article](https://forum.proxmox.com/threads/set-a-dynamic-address-to-pve.119847/) and [related link](https://weblog.lkiesow.de/20220223-proxmox-test-machine-self-servic/proxmox-server-dhcp.html)
-
-### Remove subscription message
-```
-sed -Ezi.bak "s/(Ext.Msg.show\(\{\s+title: gettext\('No valid sub)/void\(\{ \/\/\1/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js && systemctl restart pveproxy.service
-```
-
-### Configure package updates for use with no subscription
-```
-mv /etc/apt/sources.list.d/ceph.list /etc/apt/sources.list.d/ceph.orig
-echo "deb http://download.proxmox.com/debian/ceph-quincy bookworm no-subscription" >/etc/apt/sources.list.d/ceph.list
-echo "deb http://download.proxmox.com/debian/ceph-reef bookworm no-subscription" >>/etc/apt/sources.list.d/ceph.list
-mv /etc/apt/sources.list.d/pve-enterprise.list /etc/apt/sources.list.d/pve-enterprise.orig
-echo "deb http://download.proxmox.com/debian/pve bookworm pve-no-subscription" >/etc/apt/sources.list.d/pve.list
-```
 
 ### Add support for snippets
 ```
