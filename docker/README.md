@@ -1,7 +1,10 @@
 # Docker
 
+Getting docker installed on an RPi4 (debian)
 
+## Apt Install
 
+Repository setup
 ```
 # Add Docker's official GPG key:
 sudo apt-get update
@@ -18,6 +21,7 @@ echo \
 sudo apt-get update
 ```
 
+Docker install and test
 ```
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 sudo usermod -aG docker $USER
