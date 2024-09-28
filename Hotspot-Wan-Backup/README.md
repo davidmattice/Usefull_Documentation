@@ -12,7 +12,7 @@ It will be necessary to connect either wirelessly or using a wired ethernet conn
 ## The environment for this use case is:
 * Samsung S21 on T-Mobile
 * Raspberry Pi 3+ - Raspberry Pi OS 11 (bullseye) - Lite edition (no desktop needed)
-* Ubiquiti USG-3P (4.4.56) AND Asus RT-AX3000 (3.0.0.4)
+* Firewalla Gold (previously Ubiquiti USG-3P (4.4.56) AND Asus RT-AX3000 (3.0.0.4))
 
 ## Steps to configure the Pi:
 
@@ -51,8 +51,8 @@ It will be necessary to connect either wirelessly or using a wired ethernet conn
     Update the file: /etc/dhcpcd.conf
     ```
     interface eth0
-    static ip_address=192.168.220.1/24  # Alternate address option: 172.31.0.1/24
-    static routers=192.168.220.0        # Alternate address option: 172.31.0.0
+    static ip_address=172.31.0.1/24
+    static routers=172.31.0.0
     ```
     Search for **eth0** as there should already be a commented out section.  This should be a subnet that is not in use on your local netowrk or by the Wireless Provider for the Hotspot.  Setting this to a static address will allow you to SSH to the Raspberry Pi from the connected device to make any required updates.
 
@@ -79,7 +79,9 @@ It will be necessary to connect either wirelessly or using a wired ethernet conn
     interface=eth0                 # Use interface eth0  
     listen-address=192.168.220.1   # Specify the address to listen on - Alternate address option: 172.31.0.1 (same as eth0 IP above)
     bind-dynamic                   # Bind to the interface
-    server=8.8.8.8                 # Use Google DNS or alterativly 1.1.1.1
+    no-resolv                      # Do not use local resolver servers
+    server=1.1.1.1                 # Use Cloudflare DNS
+    server=8.8.8.8                 # Use Google DNS
     domain-needed                  # Don't forward short names  
     bogus-priv                     # Drop the non-routed address spaces.  
     dhcp-range=192.168.220.50,192.168.220.150,12h # IP range and lease time  - Alternate: 172.31.0.50,172.31.0.150,12h
