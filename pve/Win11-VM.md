@@ -91,6 +91,13 @@ Continue the installation
 6. Disable IPv6 (uncheck)
 7. Click OK
 
+## Update Power/Sleep settings
+
+1. Open Settings
+2. Search for power
+3. Open Screen, Sleep & Hibernate timeouts
+4. Set all of them to never
+
 ## Install QEMU drivers on the Windows VM
 
 1. Open *Device Manager*
@@ -111,10 +118,21 @@ Continue the installation
 
 [See Proxmox Qemu Guest Agent](https://pve.proxmox.com/wiki/Qemu-guest-agent)
 
-## Enable VNC on the VM
+## Add Remote Access Settings
+
+**NOTE: Only do one of these choices**
+
+### Option #1: Install SPICE Guest Tools
+
+1. On the VM [download the drivers](https://www.spice-space.org/download/windows/spice-guest-tools/spice-guest-tools-latest.exe)
+2. Install them
+3. On PVE update the display to SPICE and set memory to 256 \(MiB\)
+
+
+### Option #2: Enable VNC on the VM (not this will disable SPICE resolution controls)
 
 1. Open a shell to the PVE Host
-2. Update /etc/pve/local/qemu-server/<VMID>.conf
+2. Update /etc/pve/local/qemu-server/\<VMID\>.conf
 3. Add
 ```
 args: -vnc 0.0.0.0:<Display port> # Display port can be any 2 digit unique number, higher is beeter
