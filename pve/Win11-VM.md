@@ -128,6 +128,9 @@ Continue the installation
 2. Install them
 3. On PVE update the display to SPICE and set memory to 256 \(MiB\)
 
+[Guide for Client Access](https://gitlab.com/pawlakm/pve-spice-connect)
+[Connection script](https://git.proxmox.com/?p=pve-manager.git;a=blob_plain;f=spice-example-sh;hb=HEAD)
+
 
 ### Option #2: Enable VNC on the VM (not this will disable SPICE resolution controls)
 
