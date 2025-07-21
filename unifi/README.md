@@ -54,7 +54,7 @@ Re-enable remote accesss in the UI
 
 ## Dealing with a Memory Leak (7/2025)
 
-With unifi v9.x I have been experiancing unplanned outages where the firewalla looses connectivity.  Monitoring SWAP showed that the mongodb consumed all of the swap space.  I have added this script to force restart the controller daily.  Will shoft to less frequently once this confirm no more outages.
+With unifi v9.x I have been experiancing unplanned outages where the firewalla looses connectivity.  Monitoring SWAP showed that the mongodb consumed all of the swap space.  I have added this script to force restart the controller daily.  Will shift to less frequently once this confirms no more outages.
 
 */home/pi/.firewalla/config/post_main.d/cron_unifi.sh*
 ```
